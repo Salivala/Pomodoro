@@ -1,4 +1,13 @@
 # Pomodoro
-Kotlin Pomodoro
+Simple pomodoro timer to aid in productivity.
 
-Simple pomodoro timer i'm working on to learn kotlin. Next up feature : Concurrency and pausing. 
+Features
+-
+* Countdown in task-bar Icon with colour for status
+* Separate sounds for beginning of break and beginning of work
+
+Planned Features
+-
+* Long break every X amount of cycles
+* Interface for modifying break and work durations
+* Option for icon to be a small graphic representing time left

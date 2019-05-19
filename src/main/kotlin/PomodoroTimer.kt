@@ -8,12 +8,13 @@ class PomodoroTimer constructor(
     var startBreak: () -> Duration = {Duration.ZERO},
     var startWork: () -> Duration = {Duration.ZERO}
 ) {
+    var pauseRequest: Boolean = false
     private val timeStr: String
         get() {
         return timeLeft.seconds.toString() + if(isBreak) "b" else "w"
     }
     fun run() {
-        while (timeLeft != Duration.ZERO) {
+        while (timeLeft != Duration.ZERO || pauseRequest) {
             secondAction(timeStr)
             TimeUnit.SECONDS.sleep(1)
             timeLeft = timeLeft.minus(Duration.ofSeconds(1))
@@ -28,6 +29,10 @@ class PomodoroTimer constructor(
         }
         else {
             System.exit(1)
+        }
+
+        suspend fun notifyPause() {
+            pauseRequest = true
         }
     }
 }
