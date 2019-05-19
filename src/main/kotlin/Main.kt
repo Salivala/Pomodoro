@@ -1,7 +1,7 @@
 import kotlinx.coroutines.*
 import java.time.Duration
 
-suspend fun main() {
+fun main(string: Array<String>) {
     val tray = TrayManager()
     val pomodoro = PomodoroTimer(
         secondAction = { timeStr -> tray.text = timeStr },
