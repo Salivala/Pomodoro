@@ -1,6 +1,9 @@
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 
+/**
+ * Managed logic
+ */
 class PomodoroTimer constructor(
     private var timeLeft: Duration = Duration.ofSeconds(30),
     private var isBreak: Boolean = false,
@@ -9,12 +12,19 @@ class PomodoroTimer constructor(
     var startWork: () -> Duration = {Duration.ZERO}
 ) {
     var pauseRequest: Boolean = false
+    set(value) {
+        if(value) {
+            pauseRecover = value
+        }
+        field = value
+    }
+    private var pauseRecover: Boolean = false
     private val timeStr: String
         get() {
         return timeLeft.seconds.toString() + if(isBreak) "b" else "w"
     }
     fun run() {
-        while (timeLeft != Duration.ZERO || pauseRequest) {
+        while (timeLeft != Duration.ZERO && !pauseRequest) {
             secondAction(timeStr)
             TimeUnit.SECONDS.sleep(1)
             timeLeft = timeLeft.minus(Duration.ofSeconds(1))
@@ -22,8 +32,21 @@ class PomodoroTimer constructor(
         secondAction(timeStr)
         TimeUnit.SECONDS.sleep(1)
 
-        timeLeft = if(isBreak) startWork() else startBreak()
-        isBreak = !isBreak
+        if(!pauseRecover) {
+            isBreak = !isBreak
+        }
+        if(!pauseRequest) {
+            if (isBreak && !pauseRecover) {
+                timeLeft = startBreak()
+//                isBreak = !isBreak
+            }
+            else if(!isBreak && !pauseRecover) {
+                timeLeft = startWork()
+//                isBreak = !isBreak
+            }
+            pauseRecover = false
+        }
+
         if(timeLeft != Duration.ZERO) {
             run()
         }
@@ -31,8 +54,6 @@ class PomodoroTimer constructor(
             System.exit(1)
         }
 
-        suspend fun notifyPause() {
-            pauseRequest = true
-        }
     }
+
 }
