@@ -5,9 +5,9 @@ fun main() {
     val tray = TrayManager()
     GlobalScope.launch {
         val pomodoro = PomodoroTimer(
-            secondAction = { timeLeft -> tray.text = timeLeft.toSeconds().toString() },
-            startBreak = { SoundPlayer().BeginBreak(); Duration.ofSeconds(5) },
-            startWork = { SoundPlayer().BeginWork(); Duration.ofSeconds(30) }
+            secondAction = { timeStr -> tray.text = timeStr },
+            startBreak = { SoundPlayer().beginBreak(); Duration.ofSeconds(5) },
+            startWork = { SoundPlayer().beginWork(); Duration.ofSeconds(30) }
         )
         pomodoro.run()
     }

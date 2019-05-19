@@ -1,3 +1,5 @@
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import java.awt.*
 import java.awt.event.ActionListener
 import java.awt.image.BufferedImage
@@ -16,8 +18,8 @@ class TrayManager {
     // Text of the icon
     var text: String = ""
     set(value) {
-        var image: BufferedImage = BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
-        var g2d = image.createGraphics()
+        val image: BufferedImage = BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
+        val g2d = image.createGraphics()
         g2d.font = Font(g2d.font.name, g2d.font.style, 9)
         g2d.drawString(value, 0, 16)
         g2d.dispose()
@@ -31,7 +33,7 @@ class TrayManager {
         }
         else {
             trayIcon = TrayIcon(getBlankImage(), "Pomodoro", popupMenu)
-            exitItem.addActionListener {System.exit(1)}
+            exitItem.addActionListener {System.exit(1); GlobalScope.cancel(cause = null)}
             popupMenu.add(exitItem)
             tray.add(trayIcon)
         }
@@ -41,7 +43,7 @@ class TrayManager {
     }
 
     fun addItem(text: String, action: ()->Unit) {
-        var item = MenuItem(text)
+        val item = MenuItem(text)
         item.addActionListener { run(action) }
         popupMenu.add(item)
     }
