@@ -65,7 +65,11 @@ class TrayManager {
         g2d.color = if (value.last() == 'w') Color.RED else Color.GREEN
         g2d.fillRect(0, 0 - g2d.fontMetrics.ascent, rect.width.toInt(), rect.height.toInt())
         g2d.font = Font(g2d.font.name, g2d.font.style, 13)
-        g2d.drawString(value.substring(0, value.length - 1), 1, 16)
+        g2d.drawString(value.substring(
+            0,
+            value.length - 1),
+            if(value.length > 2) 1 else 5,
+            16)
         g2d.dispose()
         trayIcon.image = image
     }
