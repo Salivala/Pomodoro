@@ -1,7 +1,6 @@
 import kotlinx.coroutines.*
 import java.time.Duration
 fun main() {
-    println("testing")
     val tray = TrayManager()
     GlobalScope.launch {
         val pomodoro = PomodoroTimer(
@@ -11,5 +10,4 @@ fun main() {
         )
         pomodoro.run()
     }
-    println("testing")
 }
