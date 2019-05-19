@@ -4,10 +4,19 @@ plugins {
     id("org.openjfx.javafxplugin") version "0.0.7"
 }
 
+
 javafx {
     modules("javafx.controls", "javafx.fxml")
 }
 version '1.0-SNAPSHOT'
+
+sourceSets {main.java.srcDir('src/main/kotlin/')}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Pomodoro.MainKt'
+    }
+}
 
 sourceCompatibility = 1.8
 

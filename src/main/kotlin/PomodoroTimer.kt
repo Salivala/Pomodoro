@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
  * Managed logic
  */
 class PomodoroTimer constructor(
-    private var timeLeft: Duration = Duration.ofSeconds(30),
+    private var timeLeft: Duration = Duration.ofMinutes(30),
     private var isBreak: Boolean = false,
     var secondAction: (String) -> Unit = {;},
     var startBreak: () -> Duration = {Duration.ZERO},
@@ -21,16 +21,16 @@ class PomodoroTimer constructor(
     private var pauseRecover: Boolean = false
     private val timeStr: String
         get() {
-        return timeLeft.seconds.toString() + if(isBreak) "b" else "w"
+        return timeLeft.toMinutes().toString() + if(isBreak) "b" else "w"
     }
     fun run() {
         while (timeLeft != Duration.ZERO && !pauseRequest) {
             secondAction(timeStr)
-            TimeUnit.SECONDS.sleep(1)
-            timeLeft = timeLeft.minus(Duration.ofSeconds(1))
+            TimeUnit.MINUTES.sleep(1)
+            timeLeft = timeLeft.minus(Duration.ofMinutes(1))
         }
         secondAction(timeStr)
-        TimeUnit.SECONDS.sleep(1)
+        TimeUnit.MINUTES.sleep(1)
 
         if(!pauseRecover) {
             isBreak = !isBreak

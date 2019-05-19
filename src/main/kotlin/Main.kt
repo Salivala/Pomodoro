@@ -5,8 +5,8 @@ suspend fun main() {
     val tray = TrayManager()
     val pomodoro = PomodoroTimer(
         secondAction = { timeStr -> tray.text = timeStr },
-        startBreak = { SoundPlayer().beginBreak(); Duration.ofSeconds(5) },
-        startWork = { SoundPlayer().beginWork(); Duration.ofSeconds(30) }
+        startBreak = { SoundPlayer().beginBreak(); Duration.ofMinutes(5) },
+        startWork = { SoundPlayer().beginWork(); Duration.ofMinutes(30) }
     )
     val job = GlobalScope.launch {
         pomodoro.run()
