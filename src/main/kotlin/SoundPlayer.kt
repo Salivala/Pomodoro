@@ -1,3 +1,4 @@
+import java.io.BufferedInputStream
 import java.io.File
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.Clip
@@ -15,11 +16,17 @@ class SoundPlayer {
     }
 
     private fun prep(pathname: String): Clip {
-        val soundFile = File(pathname)
-        val strm = AudioSystem.getAudioInputStream(soundFile)
-        val info = Info(Clip::class.java, strm.format)
-        val audioClip = AudioSystem.getLine(info) as Clip
-        audioClip.open(strm)
-        return audioClip
+        var instrm = BufferedInputStream(javaClass.getResourceAsStream(pathname))
+        var audin = AudioSystem.getAudioInputStream(instrm)
+        var clip = AudioSystem.getClip()
+        clip.open(audin)
+        return clip
+
+//        val soundFile = File(pathname)
+//        val strm = AudioSystem.getAudioInputStream(soundFile)
+//        val info = Info(Clip::class.java, strm.format)
+//        val audioClip = AudioSystem.getLine(info) as Clip
+//        audioClip.open(strm)
+//        return audioClip
     }
 }
