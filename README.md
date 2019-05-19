@@ -11,4 +11,6 @@ Planned Features
 -
 * Long break every X amount of cycles
 * Interface for modifying break and work durations
+* Set custom sounds
+* Change Volume
 * Option for icon to be a small graphic representing time left
