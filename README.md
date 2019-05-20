@@ -5,7 +5,7 @@ Simple pomodoro timer to aid in productivity.
 1. Go to build/lib/ and run the jar
 2. Two icons should appear in your task bar, showing the time left (MM SS) until break
 3. Right clicking on the leftmost icon will give you the option to pause the application or exit
-* If you do no see the icons you might need to drag them from the hidden icon menu in the taskbar
+* If you do not see the icons you might need to drag them from the hidden icon menu in the taskbar
 
 Features
 -
