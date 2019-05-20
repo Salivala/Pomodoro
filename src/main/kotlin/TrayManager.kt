@@ -1,9 +1,7 @@
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.cancel
 import java.awt.*
-import java.awt.event.ActionListener
 import java.awt.image.BufferedImage
-import javax.swing.Action
 
 /**
  * Manages Tray Icon State and update actions
@@ -12,7 +10,8 @@ import javax.swing.Action
 class TrayManager {
     private val tray: SystemTray? = if(SystemTray.isSupported()) SystemTray.getSystemTray() else null
     private val popupMenu: PopupMenu = PopupMenu()
-    private lateinit var trayIcon: TrayIcon
+    private lateinit var minuteIcon: TrayIcon
+    private lateinit var secondIcon: TrayIcon
     private val exitItem = MenuItem("Exit Pomodoro")
     var toggleItem = MenuItem()
     var toggleText: String = "Pause"
@@ -25,9 +24,15 @@ class TrayManager {
     }
 
     // Text of the icon
-    var text: String = ""
+    var minute: String = ""
     set(value) {
         generateDuration(value)
+        field = value
+    }
+
+    var second: String = ""
+    set(value) {
+        generateDuration2(value)
         field = value
     }
 
@@ -36,10 +41,13 @@ class TrayManager {
             println("System Tray not supported")
         }
         else {
-            trayIcon = TrayIcon(getBlankImage(), "Pomodoro", popupMenu)
+            minuteIcon = TrayIcon(getBlankImage(), "Pomodoro", popupMenu)
+            secondIcon = TrayIcon(getBlankImage(), "Pomodoro")
             exitItem.addActionListener {System.exit(1); GlobalScope.cancel(cause = null)}
+            minuteIcon.addActionListener { println("test")}
             popupMenu.add(exitItem)
-            tray.add(trayIcon)
+            tray.add(minuteIcon)
+            tray.add(secondIcon)
             popupMenu.add(toggleItem)
             toggleText = "Pause"
         }
@@ -71,7 +79,24 @@ class TrayManager {
             if(value.length > 2) 1 else 5,
             16)
         g2d.dispose()
-        trayIcon.image = image
+        minuteIcon.image = image
+    }
+
+
+    private fun generateDuration2(value: String) {
+        val image = BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+        val g2d = image.createGraphics()
+        val rect = g2d.fontMetrics.getStringBounds(value, g2d)
+        g2d.color = if (value.last() == 'w') Color.RED else Color.GREEN
+        g2d.fillRect(0, 0 - g2d.fontMetrics.ascent, rect.width.toInt(), rect.height.toInt())
+        g2d.font = Font(g2d.font.name, g2d.font.style, 13)
+        g2d.drawString(value.substring(
+            0,
+            value.length - 1),
+            if(value.length > 2) 1 else 5,
+            16)
+        g2d.dispose()
+        secondIcon.image = image
     }
 
 }

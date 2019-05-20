@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 class PomodoroTimer constructor(
     private var timeLeft: Duration = Duration.ofMinutes(30),
     private var isBreak: Boolean = false,
-    var secondAction: (String) -> Unit = {;},
+    var secondAction: (String, String) -> Unit = {ok, dude -> println(ok + dude)},
     var startBreak: () -> Duration = {Duration.ZERO},
     var startWork: () -> Duration = {Duration.ZERO}
 ) {
@@ -19,18 +19,23 @@ class PomodoroTimer constructor(
         field = value
     }
     private var pauseRecover: Boolean = false
-    private val timeStr: String
+    private val minuteStr: String
         get() {
         return timeLeft.toMinutes().toString() + if(isBreak) "b" else "w"
     }
+    private val secondStr: String
+        get() {
+            return timeLeft.toSecondsPart().toString() + if(isBreak) "b" else "w"
+        }
     fun run() {
         while (timeLeft != Duration.ZERO && !pauseRequest) {
-            secondAction(timeStr)
-            TimeUnit.MINUTES.sleep(1)
-            timeLeft = timeLeft.minus(Duration.ofMinutes(1))
+            secondAction(minuteStr, secondStr)
+            TimeUnit.SECONDS.sleep(1)
+            timeLeft = timeLeft.minus(Duration.ofSeconds(1))
+            println(timeLeft.toSeconds().toString())
         }
-        secondAction(timeStr)
-        TimeUnit.MINUTES.sleep(1)
+        secondAction(minuteStr, secondStr)
+        TimeUnit.SECONDS.sleep(1)
 
         if(!pauseRecover) {
             isBreak = !isBreak

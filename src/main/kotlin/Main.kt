@@ -6,7 +6,10 @@ import java.time.Duration
 fun main(args: Array<String>) {
     val tray = TrayManager()
     val pomodoro = PomodoroTimer(
-        secondAction = { timeStr -> tray.text = timeStr },
+        secondAction = { minuteStr, seconStr ->
+            tray.minute = minuteStr
+            tray.second = seconStr
+        },
         startBreak = { SoundPlayer().beginBreak(); Duration.ofMinutes(5) },
         startWork = { SoundPlayer().beginWork(); Duration.ofMinutes(30) }
     )
